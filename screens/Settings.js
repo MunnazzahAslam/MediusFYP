@@ -1,19 +1,19 @@
 import React from 'react';
 import {View , Text , StyleSheet} from 'react-native';
 
-const OTPScreen = props => {
+const SettingScreen = props => {
     return(
-        <View style={styles.otp}>
-            <Text>OTP Screen!!</Text>
+        <View style={styles.setting}>
+            <Text>Setting Screen!!</Text>
         </View>
     );
 
 };
 
 const styles = StyleSheet.create({
-    otp:{
+    setting:{
         flex: 1
     }
 });
 
-export default OTPScreen;
+export default SettingScreen;

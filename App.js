@@ -3,13 +3,15 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Header from './components/Header';
 import {Entypo} from '@expo/vector-icons';
+import MediusNavigator from "./navigation/MediusNavigator";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-     <Header title="Welcome Back" Entypo= {<Entypo name='hand' color='white' size={30} />}
-      />
-    </View>
+    <MediusNavigator />
+    // <View style={styles.container}>
+    //  <Header title="Welcome Back" Entypo= {<Entypo name='hand' color='white' size={30} />}
+    //   />
+    // </View>
   );
 }
 

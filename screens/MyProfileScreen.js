@@ -5,23 +5,19 @@ import {FontAwesome5} from '@expo/vector-icons';
 
 import HeaderButton from '../components/HeaderButton';
 
-
-const HomeScreen = props => {
+const MyProfile = props => {
     return(
-        <View style={styles.home}>
-            <Text>Home Screen!!</Text>
-            <Button title="Go to Setting!" onPress={() => {
-          props.navigation.navigate({routeName: 'Setting'});
-      }} />
-
+        <View style={styles.profile}>
+            <Text>Welcome to profile</Text>
         </View>
     );
 
 };
 
-HomeScreen.navigationOptions = navData => {
+
+MyProfile.navigationOptions = navData => {
     return {
-      headerTitle: 'Home',
+      headerTitle: 'My Profile',
       headerLeft: (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
           <Item
@@ -62,13 +58,14 @@ HomeScreen.navigationOptions = navData => {
   };
   
 
+
+
 const styles = StyleSheet.create({
-    home:{
+    profile:{
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
-    
     }
 });
 
-export default HomeScreen;
+export default MyProfile;
