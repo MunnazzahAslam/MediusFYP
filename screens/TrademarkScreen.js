@@ -7,19 +7,19 @@ import {Ionicons} from '@expo/vector-icons';
 import Colors from '../constants/Color';
 import { NavigationActions } from 'react-navigation';
 
-const SettingScreen = props => {
+const TrademarkScreen = props => {
     return(
-        <View style={styles.setting}>
-            <Text>Setting Screen!!</Text>
+        <View style={styles.Trademark}>
+            <Text>Trademark Screen!!</Text>
         </View>
        
     );
 
 };
 
-SettingScreen.navigationOptions = ({navData , navigation}) => {
+TrademarkScreen.navigationOptions = ({navData , navigation}) => {
     return {
-      headerTitle: 'Settings',
+      headerTitle: 'Trademarks Registration',
       headerLeft: (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
           <Item
@@ -44,9 +44,9 @@ SettingScreen.navigationOptions = ({navData , navigation}) => {
   
 
 const styles = StyleSheet.create({
-    setting:{
+    Trademark:{
         flex: 1
     }
 });
 
-export default SettingScreen;
+export default TrademarkScreen;

@@ -18,16 +18,16 @@ const CustomDrawer = props => {
               <View style={{ justifyContent: 'center', alignItems: 'center' }}>
               <Avatar
                     size="xlarge"
-                    overlayContainerStyle={{backgroundColor: 'grey'}}
+                    overlayContainerStyle={{backgroundColor: '#d8d8d8'}}
                     rounded
-                    icon={{name: 'user', type: 'font-awesome' , color: 'orange' , size:'23'}}
+                    icon={{name: 'user', type: 'font-awesome' , color: 'orange'}}
                     onPress={() => console.log("Works!")}
                     activeOpacity={0.7}
-                    containerStyle={{flex: 2, marginLeft: 10, marginTop: 60}}
+                    containerStyle={{flex: 1, marginLeft: 10, marginTop: 60}}
                     />
                 {/* <Avatar rounded title="US" /> */}
-                <Text style={{ color: 'white', marginTop: '7%', fontFamily: 'sans-serif-condensed' }}>hey,Marium</Text>
-                <Text style={{ color: 'white', fontFamily: 'sans-serif-condensed' }}>UserName</Text>
+                <Text style={{ color: 'white', marginTop: '9%', fontFamily: 'sans-serif-condensed',fontSize: 23 }}>Hey,Marium</Text>
+                <Text style={{ color: 'white', fontFamily: 'sans-serif-condensed', fontSize: 23 }}>UserName</Text>
               </View>
             </View>
 

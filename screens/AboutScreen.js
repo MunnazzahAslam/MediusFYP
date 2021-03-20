@@ -7,19 +7,19 @@ import {Ionicons} from '@expo/vector-icons';
 import Colors from '../constants/Color';
 import { NavigationActions } from 'react-navigation';
 
-const SettingScreen = props => {
+const AboutScreen = props => {
     return(
-        <View style={styles.setting}>
-            <Text>Setting Screen!!</Text>
+        <View style={styles.About}>
+            <Text>About Screen!!</Text>
         </View>
        
     );
 
 };
 
-SettingScreen.navigationOptions = ({navData , navigation}) => {
+AboutScreen.navigationOptions = ({navData , navigation}) => {
     return {
-      headerTitle: 'Settings',
+      headerTitle: 'Abouts Registration',
       headerLeft: (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
           <Item
@@ -44,9 +44,9 @@ SettingScreen.navigationOptions = ({navData , navigation}) => {
   
 
 const styles = StyleSheet.create({
-    setting:{
+    About:{
         flex: 1
     }
 });
 
-export default SettingScreen;
+export default AboutScreen;

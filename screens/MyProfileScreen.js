@@ -5,7 +5,7 @@ import {FontAwesome5} from '@expo/vector-icons';
 
 import HeaderButton from '../components/HeaderButton';
 
-const MyProfile = props => {
+const ProfileScreen = props => {
     return(
         <View style={styles.profile}>
             <Text>Welcome to profile</Text>
@@ -15,7 +15,7 @@ const MyProfile = props => {
 };
 
 
-MyProfile.navigationOptions = navData => {
+ProfileScreen.navigationOptions = navData => {
     return {
       headerTitle: 'My Profile',
       headerLeft: (
@@ -68,4 +68,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default MyProfile;
+export default ProfileScreen;

@@ -5,23 +5,19 @@ import {FontAwesome5} from '@expo/vector-icons';
 
 import HeaderButton from '../components/HeaderButton';
 
-
-const LoginScreen = props => {
+const CaseInformation = props => {
     return(
-        <View style={styles.home}>
-            <Text>Login Screen!!</Text>
-            <Button title="Go to Setting!" onPress={() => {
-          props.navigation.navigate({routeName: 'Setting'});
-      }} />
-
+        <View style={styles.profile}>
+            <Text>Welcome to profile</Text>
         </View>
     );
 
 };
 
-LoginScreen.navigationOptions = navData => {
+
+CaseInformation.navigationOptions = navData => {
     return {
-      headerTitle: 'Login',
+      headerTitle: 'Case Information',
       headerLeft: (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
           <Item
@@ -62,13 +58,14 @@ LoginScreen.navigationOptions = navData => {
   };
   
 
+
+
 const styles = StyleSheet.create({
-    home:{
+    profile:{
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
-    
     }
 });
 
-export default LoginScreen;
+export default CaseInformation;
