@@ -12,13 +12,6 @@ import {
     TouchableOpacity,
     KeyboardAvoidingView,
 } from 'react-native';
-import {
-    CodeField,
-    Cursor,
-    useBlurOnFulfill,
-    useClearByFocusCell,
-} from 'react-native-confirmation-code-field';
-
 import * as yup from 'yup'
 import Colors from '../constants/Color';
 import Card from '../components/Card';
@@ -36,13 +29,7 @@ const loginValidationSchema = yup.object().shape({
 
 const TrademarkScreen = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
-    const CELL_COUNT = 4;
-    const [value, setValue] = useState('');
-    const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
-    const [props, getCellOnLayoutHandler] = useClearByFocusCell({
-        value,
-        setValue,
-    });
+
     return (
         <View style={styles.mainBody}>
             <Loader loading={loading} />
@@ -57,8 +44,8 @@ const TrademarkScreen = ({ navigation }) => {
                     <KeyboardAvoidingView enabled>
                         <View style={styles.header}>
                             <Text style={styles.headerTitle} >
-                                Verification Code
-                            </Text>
+                                Reset Password Now!
+           </Text>
                         </View>
                         <View>
                             <View style={styles.card}>
@@ -80,31 +67,19 @@ const TrademarkScreen = ({ navigation }) => {
                                         }) => (
                                             <>
                                                 <View style={styles.SectionStyle}>
-                                                    <Text style={styles.registerTextStyle}>
-                                                        Please enter the 4 digit OTP code sent to +92********809
-                                                    </Text>
+                                                    <Text style={styles.registerTextStyle}> Please enter the email address associated with your Medius account.
+                                           </Text>
                                                 </View>
                                                 <View style={styles.SectionStyle}>
-                                                    <CodeField
-                                                        ref={ref}
-                                                        {...props}
-                                                        value={value}
-                                                        onChangeText={setValue}
-                                                        cellCount={CELL_COUNT}
-                                                        rootStyle={styles.codeFieldRoot}
-                                                        keyboardType="number-pad"
-                                                        textContentType="oneTimeCode"
-                                                        renderCell={({ index, symbol, isFocused }) => (
-                                                            <View
-                                                                // Make sure that you pass onLayout={getCellOnLayoutHandler(index)} prop to root component of "Cell"
-                                                                onLayout={getCellOnLayoutHandler(index)}
-                                                                key={index}
-                                                                style={[styles.cellRoot, isFocused && styles.focusCell]}>
-                                                                <Text style={styles.cellText}>
-                                                                    {symbol || (isFocused ? <Cursor /> : null)}
-                                                                </Text>
-                                                            </View>
-                                                        )}
+                                                    <TextInput
+                                                        style={styles.inputStyle}
+                                                        name="email"
+                                                        placeholder="Enter your email address"
+                                                        placeholderTextColor="#7B8B9A"
+                                                        onChangeText={handleChange('email')}
+                                                        onBlur={handleBlur('email')}
+                                                        value={values.email}
+                                                        keyboardType="email-address"
                                                     />
                                                     {(errors.email && touched.email) &&
                                                         <Text style={styles.errorTextStyle}>{errors.email}</Text>
@@ -265,12 +240,13 @@ const styles = StyleSheet.create({
         zIndex: 999
     },
     codeFieldRoot: {
-        width: 200,
-        marginLeft: 30,
-        marginRight: 5,
+        marginTop: 20,
+        width: 280,
+        marginLeft: 'auto',
+        marginRight: 'auto',
     },
     cellRoot: {
-        width: 40,
+        width: 60,
         height: 60,
         justifyContent: 'center',
         alignItems: 'center',
@@ -278,7 +254,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
     },
     cellText: {
-        color: '#7B8B9A',
+        color: '#000',
         fontSize: 36,
         textAlign: 'center',
     },

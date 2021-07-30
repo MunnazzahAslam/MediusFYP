@@ -12,13 +12,6 @@ import {
     TouchableOpacity,
     KeyboardAvoidingView,
 } from 'react-native';
-import {
-    CodeField,
-    Cursor,
-    useBlurOnFulfill,
-    useClearByFocusCell,
-} from 'react-native-confirmation-code-field';
-
 import * as yup from 'yup'
 import Colors from '../constants/Color';
 import Card from '../components/Card';
@@ -27,22 +20,18 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Loader from './Components/Loader';
 
 const loginValidationSchema = yup.object().shape({
-    email: yup
+    password: yup
         .string()
-        .email("Please enter valid email")
-        .required('Email Address is Required'),
+        .min(8, ({ min }) => `Password must be at least ${min} letters`)
+        .required('Password is required'),
+    passwordConfirmation: yup.string()
+        .oneOf([yup.ref('password'), null], 'Passwords must match')
 })
 
 
 const TrademarkScreen = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
-    const CELL_COUNT = 4;
-    const [value, setValue] = useState('');
-    const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
-    const [props, getCellOnLayoutHandler] = useClearByFocusCell({
-        value,
-        setValue,
-    });
+
     return (
         <View style={styles.mainBody}>
             <Loader loading={loading} />
@@ -57,8 +46,8 @@ const TrademarkScreen = ({ navigation }) => {
                     <KeyboardAvoidingView enabled>
                         <View style={styles.header}>
                             <Text style={styles.headerTitle} >
-                                Verification Code
-                            </Text>
+                                Reset Password
+           </Text>
                         </View>
                         <View>
                             <View style={styles.card}>
@@ -80,34 +69,33 @@ const TrademarkScreen = ({ navigation }) => {
                                         }) => (
                                             <>
                                                 <View style={styles.SectionStyle}>
-                                                    <Text style={styles.registerTextStyle}>
-                                                        Please enter the 4 digit OTP code sent to +92********809
-                                                    </Text>
+                                                    <TextInput
+                                                        style={styles.inputStyle}
+                                                        name="password"
+                                                        placeholder="Enter your password"
+                                                        placeholderTextColor="#7B8B9A"
+                                                        onChangeText={handleChange('password')}
+                                                        onBlur={handleBlur('password')}
+                                                        value={values.password}
+                                                        secureTextEntry
+                                                    />
+                                                    {(errors.password && touched.password) &&
+                                                        <Text style={styles.errorTextStyle}>{errors.password}</Text>
+                                                    }
                                                 </View>
                                                 <View style={styles.SectionStyle}>
-                                                    <CodeField
-                                                        ref={ref}
-                                                        {...props}
-                                                        value={value}
-                                                        onChangeText={setValue}
-                                                        cellCount={CELL_COUNT}
-                                                        rootStyle={styles.codeFieldRoot}
-                                                        keyboardType="number-pad"
-                                                        textContentType="oneTimeCode"
-                                                        renderCell={({ index, symbol, isFocused }) => (
-                                                            <View
-                                                                // Make sure that you pass onLayout={getCellOnLayoutHandler(index)} prop to root component of "Cell"
-                                                                onLayout={getCellOnLayoutHandler(index)}
-                                                                key={index}
-                                                                style={[styles.cellRoot, isFocused && styles.focusCell]}>
-                                                                <Text style={styles.cellText}>
-                                                                    {symbol || (isFocused ? <Cursor /> : null)}
-                                                                </Text>
-                                                            </View>
-                                                        )}
+                                                    <TextInput
+                                                        style={styles.inputStyle}
+                                                        name="passwordConfirmation"
+                                                        placeholder="Confirm your password"
+                                                        placeholderTextColor="#7B8B9A"
+                                                        onChangeText={handleChange('passwordConfirmation')}
+                                                        onBlur={handleBlur('passwordConfirmation')}
+                                                        value={values.passwordConfirmation}
+                                                        secureTextEntry
                                                     />
-                                                    {(errors.email && touched.email) &&
-                                                        <Text style={styles.errorTextStyle}>{errors.email}</Text>
+                                                    {(errors.passwordConfirmation && touched.passwordConfirmation) &&
+                                                        <Text style={styles.errorTextStyle}>{errors.passwordConfirmation}</Text>
                                                     }
                                                 </View>
                                                 <TouchableOpacity
@@ -204,8 +192,7 @@ const styles = StyleSheet.create({
         color: '#7B8B9A',
         fontSize: 14,
         padding: 10,
-        width: 250,
-        textAlign: 'center'
+        width: 250
     },
     TextStyle: {
         color: '#7B8B9A',
@@ -265,12 +252,13 @@ const styles = StyleSheet.create({
         zIndex: 999
     },
     codeFieldRoot: {
-        width: 200,
-        marginLeft: 30,
-        marginRight: 5,
+        marginTop: 20,
+        width: 280,
+        marginLeft: 'auto',
+        marginRight: 'auto',
     },
     cellRoot: {
-        width: 40,
+        width: 60,
         height: 60,
         justifyContent: 'center',
         alignItems: 'center',
@@ -278,7 +266,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
     },
     cellText: {
-        color: '#7B8B9A',
+        color: '#000',
         fontSize: 36,
         textAlign: 'center',
     },

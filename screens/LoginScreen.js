@@ -1,4 +1,5 @@
-import React, {useState, createRef} from 'react';
+import React, { useState, createRef } from 'react';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {
   StyleSheet,
   TextInput,
@@ -7,70 +8,31 @@ import {
   ScrollView,
   Image,
   Keyboard,
+  Button,
   TouchableOpacity,
   KeyboardAvoidingView,
 } from 'react-native';
-
+import * as yup from 'yup'
+import Colors from '../constants/Color';
+import Card from '../components/Card';
+import { Formik } from 'formik'
 import AsyncStorage from '@react-native-community/async-storage';
+import Loader from './Components/Loader';
 
-const LoginScreen = ({navigation}) => {
-  const [userEmail, setUserEmail] = useState('');
-  const [userPassword, setUserPassword] = useState('');
+const loginValidationSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Please enter valid email")
+    .required('Email Address is Required'),
+  password: yup
+    .string()
+    .min(8, ({ min }) => `Password must be at least ${min} letters`)
+    .required('Password is required'),
+})
+
+
+const TrademarkScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
-  const [errortext, setErrortext] = useState('');
-
-  const passwordInputRef = createRef();
-
-  const handleSubmitPress = () => {
-    setErrortext('');
-    if (!userEmail) {
-      alert('Please fill Email');
-      return;
-    }
-    if (!userPassword) {
-      alert('Please fill Password');
-      return;
-    }
-    setLoading(true);
-    let dataToSend = {email: userEmail, password: userPassword};
-    let formBody = [];
-    for (let key in dataToSend) {
-      let encodedKey = encodeURIComponent(key);
-      let encodedValue = encodeURIComponent(dataToSend[key]);
-      formBody.push(encodedKey + '=' + encodedValue);
-    }
-    formBody = formBody.join('&');
-
-    fetch('http://localhost:3000/api/user/login', {
-      method: 'POST',
-      body: formBody,
-      headers: {
-        //Header Defination
-        'Content-Type':
-        'application/x-www-form-urlencoded;charset=UTF-8',
-      },
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        //Hide Loader
-        setLoading(false);
-        console.log(responseJson);
-        // If server response message same as Data Matched
-        if (responseJson.status === 'success') {
-          AsyncStorage.setItem('user_id', responseJson.data.email);
-          console.log(responseJson.data.email);
-          navigation.replace('DrawerNavigationRoutes');
-        } else {
-          setErrortext(responseJson.msg);
-          console.log('Please check your email id or password');
-        }
-      })
-      .catch((error) => {
-        //Hide Loader
-        setLoading(false);
-        console.error(error);
-      });
-  };
 
   return (
     <View style={styles.mainBody}>
@@ -84,130 +46,238 @@ const LoginScreen = ({navigation}) => {
         }}>
         <View>
           <KeyboardAvoidingView enabled>
-            <View style={{alignItems: 'center'}}>
-              <Image
-                source={require('../assets/icon.png')}
-                style={{
-                  width: '50%',
-                  height: 100,
-                  resizeMode: 'contain',
-                  margin: 30,
-                }}
-              />
+            <View style={styles.header}>
+              <Text style={styles.headerTitle} >
+                Welcome Back!
+           </Text>
             </View>
-            <View style={styles.SectionStyle}>
-              <TextInput
-                style={styles.inputStyle}
-                onChangeText={(UserEmail) =>
-                  setUserEmail(UserEmail)
-                }
-                placeholder="Enter Email" //dummy@abc.com
-                placeholderTextColor="#8b9cb5"
-                autoCapitalize="none"
-                keyboardType="email-address"
-                returnKeyType="next"
-                onSubmitEditing={() =>
-                  passwordInputRef.current &&
-                  passwordInputRef.current.focus()
-                }
-                underlineColorAndroid="#f000"
-                blurOnSubmit={false}
-              />
+            <View>
+              <View style={styles.card}>
+                <Card style={styles.buttonConatiner}>
+                  <Formik
+                    validateOnMount={true}
+                    validationSchema={loginValidationSchema}
+                    initialValues={{ email: '', password: '' }}
+                    onSubmit={values => console.log(values)}
+                  >
+                    {({
+                      handleChange,
+                      handleBlur,
+                      handleSubmit,
+                      values,
+                      errors,
+                      touched,
+                      isValid,
+                    }) => (
+                      <>
+                        <View style={styles.SectionStyle}>
+                          <TextInput
+                            style={styles.inputStyle}
+                            name="email"
+                            placeholder="Enter your email address"
+                            placeholderTextColor="#7B8B9A"
+                            onChangeText={handleChange('email')}
+                            onBlur={handleBlur('email')}
+                            value={values.email}
+                            keyboardType="email-address"
+                          />
+                          {(errors.email && touched.email) &&
+                            <Text style={styles.errorTextStyle}>{errors.email}</Text>
+                          }
+                        </View>
+                        <View style={styles.SectionStyle}>
+                          <TextInput
+                            style={styles.inputStyle}
+                            name="password"
+                            placeholder="Enter your password"
+                            placeholderTextColor="#7B8B9A"
+                            onChangeText={handleChange('password')}
+                            onBlur={handleBlur('password')}
+                            value={values.password}
+                            secureTextEntry
+                          />
+                          {(errors.password && touched.password) &&
+                            <Text style={styles.errorTextStyle}>{errors.password}</Text>
+                          }
+                        </View>
+                        <TouchableOpacity
+                          style={styles.buttonStyle}
+                          activeOpacity={0.5}
+                          onPress={handleSubmit}
+                          disabled={!isValid || values.email === ''}>
+                          <View>
+                            <Icon style={styles.arrowIcon} name="arrow-forward-outline" size={80} color="#fff" />
+                            <Text style={styles.buttonTextStyle}></Text>
+                          </View>
+                        </TouchableOpacity>
+                      </>
+                    )}
+
+                  </Formik>
+                  <Text
+                    style={styles.registerTextStyle}>
+                    Don't have an account?<Text onPress={() => navigation.navigate('RegisterScreen')} style={styles.spanStyle}> Sign Up Now! </Text>
+                  </Text>
+                </Card>
+              </View>
             </View>
-            <View style={styles.SectionStyle}>
-              <TextInput
-                style={styles.inputStyle}
-                onChangeText={(UserPassword) =>
-                  setUserPassword(UserPassword)
-                }
-                placeholder="Enter Password" //12345
-                placeholderTextColor="#8b9cb5"
-                keyboardType="default"
-                ref={passwordInputRef}
-                onSubmitEditing={Keyboard.dismiss}
-                blurOnSubmit={false}
-                secureTextEntry={true}
-                underlineColorAndroid="#f000"
-                returnKeyType="next"
-              />
-            </View>
-            {errortext != '' ? (
-              <Text style={styles.errorTextStyle}>
-                {errortext}
-              </Text>
-            ) : null}
-            <TouchableOpacity
-              style={styles.buttonStyle}
-              activeOpacity={0.5}
-              onPress={handleSubmitPress}>
-              <Text style={styles.buttonTextStyle}>LOGIN</Text>
-            </TouchableOpacity>
-            <Text
-              style={styles.registerTextStyle}
-              onPress={() => navigation.navigate('RegisterScreen')}>
-              New Here ? Register
-            </Text>
           </KeyboardAvoidingView>
         </View>
       </ScrollView>
-    </View>
+    </View >
   );
 };
-export default LoginScreen;
+export default TrademarkScreen;
 
 const styles = StyleSheet.create({
+  searchIcon: {
+    top: 23,
+    left: 10,
+    marginRight: 10
+  },
+  card: {
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 5 },
+    elevation: 5,
+    shadowRadius: 6,
+    shadowOpacity: 0.26,
+    backgroundColor: 'white',
+    padding: 10,
+    borderRadius: 15,
+  },
+
   mainBody: {
+    marginTop: -280,
     flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#307ecc',
+    backgroundColor: '#fff',
     alignContent: 'center',
   },
   SectionStyle: {
-    flexDirection: 'row',
-    height: 40,
+    flexDirection: 'column',
+    width: 450,
+    height: 45,
     marginTop: 20,
-    marginLeft: 35,
-    marginRight: 35,
-    margin: 10,
+    marginLeft: 2,
+    marginRight: 40,
+    marginBottom: 15
   },
   buttonStyle: {
-    backgroundColor: '#7DE24E',
+    backgroundColor: Colors.primaryColor,
     borderWidth: 0,
-    color: '#FFFFFF',
+    color: '#fff',
     borderColor: '#7DE24E',
     height: 40,
     alignItems: 'center',
-    borderRadius: 30,
-    marginLeft: 35,
-    marginRight: 35,
-    marginTop: 20,
-    marginBottom: 25,
+    borderRadius: 50,
+    marginLeft: 85,
+    marginRight: 50,
+    marginTop: 35,
+    zIndex: 999,
+    marginBottom: 10,
+    width: 80,
+    height: 80,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 100
   },
   buttonTextStyle: {
-    color: '#FFFFFF',
+    color: '#fff',
     paddingVertical: 10,
     fontSize: 16,
   },
   inputStyle: {
     flex: 1,
-    color: 'white',
-    paddingLeft: 15,
-    paddingRight: 15,
-    borderWidth: 1,
-    borderRadius: 30,
-    borderColor: '#dadae8',
+    color: '#7B8B9A',
+    paddingLeft: 35,
+    borderBottomColor: '#dadae8',
+    borderBottomWidth: 1,
+    width: 230,
   },
   registerTextStyle: {
-    color: '#FFFFFF',
-    textAlign: 'center',
-    fontWeight: 'bold',
+    color: '#7B8B9A',
     fontSize: 14,
-    alignSelf: 'center',
     padding: 10,
+    width: 250
+  },
+  TextStyle: {
+    color: '#7B8B9A',
+    textAlign: 'center',
+    fontSize: 14,
+    paddingTop: 20,
+    textDecorationLine: 'underline',
+    marginLeft: 80
+  },
+  spanStyle: {
+    color: Colors.primaryColor,
+    textAlign: 'center',
+    fontSize: 14,
+    paddingTop: 12,
+    textDecorationLine: 'underline',
+    marginLeft: 80
   },
   errorTextStyle: {
     color: 'red',
-    textAlign: 'center',
     fontSize: 14,
+  },
+  header: {
+    width: '100%',
+    height: 400,
+    // paddingTop: 36,
+    backgroundColor: Colors.primaryColor, //greencolorfyp //
+    alignItems: 'stretch',
+    justifyContent: 'center',
+    paddingLeft: 20,
+    borderBottomLeftRadius: 50,
+    paddingTop: 300,
+    borderBottomRightRadius: 50,
+  },
+  headerTitle: {
+    color: 'white',  //white
+    fontSize: 30,
+    textAlign: 'left',
+    marginTop: -258,
+    paddingLeft: 5
+
+  },
+  buttonConatiner: {
+    marginBottom: 20,
+    marginTop: -80,
+    width: 1200,
+    maxWidth: '95%',
+    height: 250,
+    paddingTop: 20
+  },
+  card: {
+    paddingLeft: 40,
+    paddingRight: 20,
+  },
+  arrowIcon: {
+    paddingTop: 35,
+    marginLeft: -10,
+    zIndex: 999
+  },
+  codeFieldRoot: {
+    marginTop: 20,
+    width: 280,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+  cellRoot: {
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 1,
+  },
+  cellText: {
+    color: '#000',
+    fontSize: 36,
+    textAlign: 'center',
+  },
+  focusCell: {
+    borderBottomColor: '#007AFF',
+    borderBottomWidth: 2,
   },
 });
