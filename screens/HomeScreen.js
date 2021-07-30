@@ -17,7 +17,7 @@ const HomeScreen = props => {
               <View>
               <Avatar
                size={120}
-              overlayContainerStyle={{backgroundColor: '#d8d8d8' , left:220 , bottom:100}}
+              overlayContainerStyle={{backgroundColor: '#d8d8d8' , left:200 , bottom:95}}
               rounded
               source={require('../assets/avatar.png')}
                />
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
       // paddingBottom: 50,
       //  marginVertical: 50,
     marginTop:40,
-    marginLeft:10,
+    marginLeft:6,
     justifyContent: 'flex-end',
       //  paddingRight: 70,
     },
@@ -171,13 +171,13 @@ const styles = StyleSheet.create({
     width: 170,
   },
   copyrightsConatiner: {
-    marginTop: 30,
+    marginTop: 5,
     height: 170,
     width: 170,
     
   },
   designConatiner: {
-    marginTop: 30,
+    marginTop: 5,
     height: 170,
     width: 170,
   },

@@ -29,7 +29,9 @@ import QuestionScreen from '../screens/QuestionScreen';
 import PolicyScreen from '../screens/PolicyScreen';
 import ContactScreen from '../screens/ContactScreen';
 import TermScreen from '../screens/TermScreen';
-
+import SignUpScreen from '../screens/SignUpScreen';
+import LoginScreen from '../screens/LoginScreen';
+import ShowInformation from '../screens/ShowInformationScreen';
 
 const MediusNavigator = createStackNavigator({
     Home: HomeScreen,
@@ -39,19 +41,21 @@ const MediusNavigator = createStackNavigator({
     Patent: PatentScreen,
     Design: DesignScreen,
     Copyright: CopyrightScreen,
-   
-   
+    SignUp: SignUpScreen,
+    Login: LoginScreen,
 });
 
 const Profile = createStackNavigator({
     MyProfile: ProfileScreen,
     Home: HomeScreen,
     Setting: SettingScreen,
-
 });
 
 const MySettings = createStackNavigator({
-    Setting: SettingScreen
+    Setting: SettingScreen,
+    MyProfile: ProfileScreen,
+    Change: ChangePasswordScreen,
+    Notification: NotificationsScreen
 });
 
 const TabOptions = {
@@ -104,7 +108,8 @@ createMaterialBottomTabNavigator(
 // Drawer Items
 const CaseNavigator = createStackNavigator(
     {
-     Case: CaseInformation
+     Case: CaseInformation,
+     Info: ShowInformation
     },
   );
 
@@ -112,12 +117,10 @@ const RegisterNavigator = createStackNavigator({
     Register: RegistrationStatus
 });
 
-const NotificationNavigator = createStackNavigator({
-    Notification: NotificationsScreen
-});
 
-const PasswordNavigator = createStackNavigator({
-    Change: ChangePasswordScreen
+
+const SettingNavigator = createStackNavigator({
+    Setting: SettingScreen
 });
 
 const HelpNavigator = createStackNavigator({
@@ -146,7 +149,7 @@ const MainNavigator = createDrawerNavigator(
         Case: {
            screen: CaseNavigator,
            navigationOptions: {
-            drawerLabel: 'Case Information',
+            drawerLabel: 'Registered Cases',
             drawerIcon:  <Ionicons  name='information-circle-outline' size={25}  />
           }
        },
@@ -157,27 +160,7 @@ const MainNavigator = createDrawerNavigator(
          drawerIcon:  <MaterialCommunityIcons  name='registered-trademark' size={25}  />
        }
     },
-        Excuse: {
-            screen: Profile,
-            navigationOptions: {
-              drawerLabel: 'My Profile',
-              drawerIcon:  <FontAwesome5  name='user-circle' size={25}  />
-            }
-          },
-        Notification: {
-            screen: NotificationNavigator,
-            navigationOptions: {
-             drawerLabel: 'Notifications',
-             drawerIcon:  <Ionicons  name='notifications-circle-outline' size={25}  />
-           }
-        },
-        Change: {
-            screen: PasswordNavigator,
-            navigationOptions: {
-             drawerLabel: 'Change Password',
-             drawerIcon:  <FontAwesome5  name='lock' size={23}  />
-           }
-        },
+      
         Help: {
             screen: HelpNavigator,
             navigationOptions: {
@@ -185,11 +168,18 @@ const MainNavigator = createDrawerNavigator(
              drawerIcon:  <Ionicons  name='help-circle-outline' size={25}  />
            }
         },
+        Setting: {
+                screen: SettingNavigator,
+                navigationOptions: {
+                 drawerLabel: 'Settings',
+                 drawerIcon:  <Ionicons name="settings-outline" size={24}  />
+               }
+            },
         Logout: {
             screen: LogoutNavigator,
             navigationOptions: {
             //  drawerLabel: 'FAQs & Help',
-             drawerIcon:  <AntDesign  name='logout' size={25}  />
+             drawerIcon:  <AntDesign  name='logout' size={24}  />
            }
         },
     },

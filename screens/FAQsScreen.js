@@ -1,6 +1,6 @@
 import React from 'react';
-import {View , Text , StyleSheet , Image , TouchableOpacity , Platform} from 'react-native';
-// import {View , Text , StyleSheet , Button} from 'react-native';
+import {View , Text , StyleSheet , Image , TouchableOpacity ,  Platform,
+  TouchableNativeFeedback} from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import {FontAwesome5 , Ionicons , MaterialIcons , Feather} from '@expo/vector-icons';
 import Card from '../components/Card';
@@ -8,6 +8,11 @@ import HeaderButton from '../components/HeaderButton';
 import Colors from '../constants/Color';
 
 const FAQScreen = props => {
+  let TouchableCmp = TouchableOpacity;
+
+  if (Platform.OS === 'android' && Platform.Version >= 21) {
+    TouchableCmp = TouchableNativeFeedback;
+  }
     return(
         <View style={styles.faqs}>
           <Ionicons name='help-circle-outline' size={60} color={Colors.primaryColor} />
@@ -17,18 +22,18 @@ const FAQScreen = props => {
             <View style={{flexDirection:'column'}} >
             <View style={{flexDirection:'row'}}>
               {/* About Medius*/}
-          <TouchableOpacity   onPress={() => {
+          <TouchableCmp  onPress={() => {
           props.navigation.navigate({
               routeName: 'About'
           }); }}>
             <View style={styles.help}>
                 <Card style= {styles.aboutContainer} >
-                  <MaterialIcons name='mobile-friendly' size={26} color={Colors.accentColor} />
+                  <MaterialIcons name='mobile-friendly' size={30} color={Colors.primaryColor} />
                   <Text style={styles.textProp}>About Medius</Text>
                   <Text style={styles.Text2}>All the information about medius</Text>
                 </Card>
             </View>
-          </TouchableOpacity>
+          </TouchableCmp>
          
         {/* PatentScreen */}
         <TouchableOpacity style={styles.help} onPress={() => {
@@ -36,8 +41,8 @@ const FAQScreen = props => {
               routeName: 'Question'
           }); }}>
           <Card style= {styles.faqContainer} >
-            <Ionicons name='md-chatbubbles-outline' size={26} color={Colors.accentColor} />
-            <Text style={styles.textProp}>FAQ</Text>
+            <Ionicons name='md-chatbubbles-outline' size={30} color={Colors.primaryColor} />
+            <Text style={styles.textProp}>FAQs</Text>
             <Text style={styles.Text2}>Frequently asked questions</Text>
           </Card>
           </TouchableOpacity>
@@ -50,7 +55,7 @@ const FAQScreen = props => {
           });
       }}>
           <Card style= {styles.contactContainer} >
-            <Feather name='phone-call' size={26} color={Colors.accentColor} />
+            <Feather name='phone-call' size={30} color={Colors.primaryColor} />
             <Text style={styles.textProp}>Contact Us</Text>
             <Text style={styles.Text2}>Contact information about medius</Text>
           </Card>
@@ -63,7 +68,7 @@ const FAQScreen = props => {
       }}>
        
           <Card style= {styles.policyContainer} >
-            <Ionicons name='md-newspaper-sharp' size={26} color={Colors.accentColor} />
+            <Ionicons name='md-newspaper-sharp' size={30} color={Colors.primaryColor} />
             <Text style={styles.textProp}>Privacy Policy</Text>
             <Text style={styles.Text2}>Privacy policy of medius</Text>
           </Card>
@@ -77,11 +82,11 @@ const FAQScreen = props => {
       }}>
        
           <Card style= {styles.termsContainer} >
-            <FontAwesome5 name='handshake' size={26} color={Colors.accentColor} />
+            <FontAwesome5 name='handshake' size={30} color={Colors.primaryColor} />
             <Text style={styles.textProp}>Terms & Conditions</Text>
             <Text style={{ paddingTop: 10,
         alignItems: 'flex-start',
-        fontSize: 12,
+        fontSize: 14,
         color: Colors.primaryColor,
   }}>Terms & Conditions </Text>
           </Card>
@@ -92,26 +97,28 @@ const FAQScreen = props => {
 };
 
 
-FAQScreen.navigationOptions = ({navData , navigation}) => {
+FAQScreen.navigationOptions = navData => {
     return {
-      headerTitle: 'Help',
+      headerTitle: 'Help Screen!!',
       headerLeft: (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
-            <Item
-              title="Menu"
-              iconName="ios-menu"
-              color='black'
-              onPress={() => {
-                navData.navigation.toggleDrawer();
-              }}
-            />
+          <Item
+        
+            title="Menu"
+            iconName="ios-menu"
+            color='black'
+            onPress={() => {
+              navData.navigation.toggleDrawer();
+            }}
+          />
         </HeaderButtons>
       ),
       headerRight: (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
             <Ionicons name='arrow-back-circle-sharp' size={40} 
             color={Colors.primaryColor} style={{paddingRight:10}}
-            onPress={() => navigation.goBack(null)} />  
+            onPress={() => navData.navigation.goBack(null)}
+             />
         </HeaderButtons>
          
       ),
@@ -134,15 +141,15 @@ const styles = StyleSheet.create({
       // shadowOpacity: 0.15,
       // shadowOffset: { width: 0, height: 1 },
       // shadowRadius: 1,
-      alignItems: 'flex-end',
+      // alignItems: 'flex-end',
       // padding: 15,
-      flexDirection: 'row',
-      flexWrap: 'wrap',
+      // flexDirection: 'row',
+      // flexWrap: 'wrap',
         // paddingTop: 30,
         // paddingBottom: 50,
         //  marginVertical: 50,
-      marginTop:40,
-      marginLeft:10,
+      marginTop:30,
+       marginLeft:7,
       marginRight:10,
       justifyContent: 'flex-end',
         //  paddingRight: 70,
@@ -152,35 +159,38 @@ const styles = StyleSheet.create({
          height: 150,
     },
     aboutContainer: {
+      marginLeft: 5,
       // flex:1,
-      height: 160,
-      width: 185,
+      height: 150,
+      width: 180,
       
     },
     faqContainer: {
-      
-      height: 160,
-      width: 185,
+      // marginRight: 10,
+      // marginTop: 3,
+      height: 150,
+      width: 180,
     },
     contactContainer: {
-      marginTop: 10,
-      height: 160,
-      width: 185,
+      marginLeft: 5,
+      marginTop: 2,
+      height: 150,
+      width: 180,
       
     },
     policyContainer: {
-      marginTop: 10,
-      height: 160,
-      width: 185,
+      marginTop: 2,
+      height: 150,
+      width: 180,
     },
     termsContainer: {
-      marginTop: 10,
-      height: 160,
-      width: 185,
+      marginTop: 2,
+      height: 150,
+      width: 180,
 
     },
     textProp:{
-      paddingTop:10,
+      paddingTop:5,
         fontSize: 20,
         color: '#bbbbbb',
         fontWeight: 'bold'
@@ -190,7 +200,7 @@ const styles = StyleSheet.create({
       Text2: {
         paddingTop: 10,
         alignItems: 'flex-start',
-        fontSize: 12,
+        fontSize: 14,
         color: Colors.primaryColor,
   
       },

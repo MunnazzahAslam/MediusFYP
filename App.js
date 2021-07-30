@@ -4,20 +4,22 @@ import { StyleSheet, Text, View } from 'react-native';
 import Header from './components/Header';
 import {Entypo} from '@expo/vector-icons';
 import MediusNavigator from "./navigation/MediusNavigator";
+// Example of Splash, Login and Sign Up in React Native
+// https://aboutreact.com/react-native-login-and-signup/
+import 'react-native-gesture-handler';
+import { Provider } from 'react-redux';
+import store from './redux/store';
+// Import Screens
+import LoginScreen from './screens/LoginScreen';
+import SignUpScreen from './screens/SignUpScreen';
 
-export default function App() {
+const App = () => {
   return (
-    <MediusNavigator />
-    // <View style={styles.container}>
-    //  <Header title="Welcome Back" Entypo= {<Entypo name='hand' color='white' size={30} />}
-    //   />
-    // </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+    <Provider store={store}>
+            <MediusNavigator/>
+  </Provider>
    
-  },
-});
+    );
+};
+
+export default App;
